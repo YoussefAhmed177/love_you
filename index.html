@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+<title>دقة قلبك 💓</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@300;400;600;700;900&family=Great+Vibes&display=swap" rel="stylesheet">
+<style>
+/* ============ Reset ============ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --rose: #ff6b9d;
+  --rose-deep: #d43a6f;
+  --gold: #ffd96b;
+  --gold-soft: #fff4b8;
+  --deep: #05030f;
+  --text: #5a2a3c;
+}
+
+html, body {
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  font-family: 'Cairo', system-ui, sans-serif;
+  color: #fff;
+  background: #05030f;
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+button { font-family: inherit; }
+
+/* ============ Sky layer ============ */
+#sky {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.star {
+  position: absolute;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 6px #fff, 0 0 14px rgba(255,217,107,.5);
+  animation: twinkle 3s ease-in-out infinite;
+}
+@keyframes twinkle {
+  0%, 100% { opacity: .25; transform: scale(.7); }
+  50%      { opacity: 1;  transform: scale(1.2); }
+}
+
+/* Aurora */
+.aurora {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: .35;
+  pointer-events: none;
+}
+.aurora.a1 {
+  width: 70vmax; height: 70vmax;
+  background: radial-gradient(circle, rgba(255,107,157,.6), transparent 65%);
+  top: -25vmax; left: -20vmax;
+  animation: drift1 18s ease-in-out infinite;
+}
+.aurora.a2 {
+  width: 60vmax; height: 60vmax;
+  background: radial-gradient(circle, rgba(255,217,107,.55), transparent 65%);
+  bottom: -25vmax; right: -20vmax;
+  animation: drift2 22s ease-in-out infinite;
+}
+@keyframes drift1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%      { transform: translate(5vmax, 4vmax) scale(1.15); }
+}
+@keyframes drift2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%      { transform: translate(-5vmax, -4vmax) scale(1.1); }
+}
+
+/* ============ Main scene ============ */
+#scene {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1400px;
+}
+
+/* ============ Intro ============ */
+#intro {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  background: radial-gradient(ellipse at center, #0e0722, #05030f 80%);
+  transition: opacity 1.2s ease, transform 1.2s ease;
+  padding: 20px;
+  text-align: center;
+}
+#intro.gone {
+  opacity: 0;
+  transform: scale(1.15);
+  pointer-events: none;
+}
+
+.intro-title {
+  font-family: 'Amiri', serif;
+  font-size: clamp(1.6rem, 6.5vw, 2.6rem);
+  font-weight: 700;
+  line-height: 1.9;
+  text-shadow: 0 0 40px rgba(255,217,107,.5);
+  max-width: 640px;
+  opacity: 0;
+  animation: fadeInUp 1.6s ease .3s forwards;
+}
+.intro-sub {
+  font-size: clamp(.9rem, 3.5vw, 1.05rem);
+  opacity: 0;
+  color: var(--gold-soft);
+  letter-spacing: 1px;
+  animation: fadeInUp 1.6s ease .9s forwards;
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: .95; transform: translateY(0); }
+}
+
+.start-btn {
+  padding: 18px 52px;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ff8fb5, var(--rose-deep));
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 15px 50px rgba(255,107,157,.5), 0 0 0 0 rgba(255,107,157,.7);
+  animation: startPulse 2.2s ease-in-out infinite, fadeInUp 1.6s ease 1.5s forwards;
+  opacity: 0;
+  transition: transform .25s ease;
+}
+.start-btn:hover  { transform: translateY(-3px) scale(1.04); }
+.start-btn:active { transform: scale(.96); }
+@keyframes startPulse {
+  0%, 100% { box-shadow: 0 15px 50px rgba(255,107,157,.5), 0 0 0 0 rgba(255,107,157,.7); }
+  50%      { box-shadow: 0 15px 50px rgba(255,107,157,.7), 0 0 0 22px rgba(255,107,157,0); }
+}
+
+/* ============ Heart ============ */
+#heart-wrap {
+  position: relative;
+  width: min(60vmin, 340px);
+  height: min(60vmin, 340px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 1s cubic-bezier(.3,1.4,.4,1), opacity .8s ease;
+  z-index: 5;
+}
+
+#heart-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 0 40px rgba(255,107,157,.85))
+          drop-shadow(0 0 90px rgba(255,217,107,.4));
+  will-change: transform;
+}
+
+#heart-path {
+  stroke-dasharray: 380;
+  stroke-dashoffset: 380;
+  animation: drawHeart 3.5s cubic-bezier(.6,0,.3,1) forwards;
+}
+@keyframes drawHeart {
+  to { stroke-dashoffset: 0; }
+}
+
+#heart-fill {
+  opacity: 0;
+  animation: fillHeart 2s ease 2.6s forwards;
+}
+@keyframes fillHeart {
+  to { opacity: 1; }
+}
+
+/* Ripple */
+.ripple {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,107,157,.7);
+  transform: translate(-50%, -50%) scale(.3);
+  pointer-events: none;
+  animation: rippleOut 1.6s ease-out forwards;
+}
+@keyframes rippleOut {
+  0%   { transform: translate(-50%, -50%) scale(.3); opacity: .9; border-color: rgba(255,107,157,.9); }
+  100% { transform: translate(-50%, -50%) scale(6);   opacity: 0;  border-color: rgba(255,217,107,.1); }
+}
+
+/* Heart beat scale */
+#heart-wrap.beating #heart-svg {
+  animation: heartbeat .85s ease-in-out infinite;
+}
+@keyframes heartbeat {
+  0%    { transform: scale(1); }
+  14%   { transform: scale(1.14); }
+  28%   { transform: scale(.98); }
+  42%   { transform: scale(1.1); }
+  70%   { transform: scale(1); }
+  100%  { transform: scale(1); }
+}
+
+/* ============ Memory bubbles ============ */
+#memories {
+  position: fixed;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.memory {
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  transform: translate(-50%, 50%);
+  font-family: 'Amiri', serif;
+  font-size: clamp(1rem, 4vw, 1.35rem);
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 0 20px rgba(255,107,157,.9), 0 0 40px rgba(255,217,107,.5);
+  white-space: nowrap;
+  padding: 8px 18px;
+  border-radius: 999px;
+  opacity: 0;
+  will-change: transform, opacity;
+  animation: memoryFloat 5s cubic-bezier(.4,0,.4,1) forwards;
+}
+@keyframes memoryFloat {
+  0%   { opacity: 0; transform: translate(-50%, 50%) scale(.5); }
+  15%  { opacity: 1; transform: translate(-50%, 30%) scale(1.05); }
+  50%  { opacity: 1; transform: translate(-50%, -30vh) scale(1); }
+  85%  { opacity: 1; transform: translate(-50%, -70vh) scale(.95); }
+  100% { opacity: 0; transform: translate(-50%, -100vh) scale(.85); }
+}
+
+/* ============ Letter ============ */
+#letter-wrap {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  overflow-y: auto;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1s ease;
+  background: radial-gradient(ellipse at center, rgba(5,3,15,.6), rgba(5,3,15,.92));
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+#letter-wrap.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.letter {
+  background: linear-gradient(170deg, #fffdfb 0%, #fff4f7 60%, #ffe9f0 100%);
+  color: var(--text);
+  border-radius: 26px;
+  padding: 44px 34px 38px;
+  max-width: 580px;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    0 40px 100px rgba(255,107,157,.35),
+    0 0 120px rgba(255,217,107,.15),
+    inset 0 0 0 1px rgba(255,255,255,.6);
+  transform: translateY(40px) scale(.92);
+  transition: transform 1.3s cubic-bezier(.2,1.3,.4,1);
+  margin: auto;
+}
+#letter-wrap.show .letter {
+  transform: translateY(0) scale(1);
+}
+.letter::before {
+  content: '';
+  position: absolute;
+  inset: 14px;
+  border: 1px dashed rgba(231,84,128,.28);
+  border-radius: 18px;
+  pointer-events: none;
+}
+.letter::after {
+  content: '❦';
+  position: absolute;
+  top: 8px; left: 50%;
+  transform: translateX(-50%);
+  color: rgba(231,84,128,.5);
+  font-size: 1.2rem;
+  background: linear-gradient(170deg, #fffdfb, #fff4f7);
+  padding: 0 12px;
+}
+
+.letter-head {
+  text-align: center;
+  font-size: 2.4rem;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+.letter-title {
+  font-family: 'Amiri', serif;
+  text-align: center;
+  font-size: clamp(1.7rem, 6.5vw, 2.3rem);
+  font-weight: 700;
+  color: #7d1f3d;
+  margin-bottom: 26px;
+  line-height: 1.6;
+}
+.letter-line {
+  font-family: 'Amiri', serif;
+  font-size: clamp(1.05rem, 4vw, 1.18rem);
+  line-height: 2.2;
+  color: #5f3242;
+  margin-bottom: 16px;
+  opacity: 0;
+  transform: translateY(12px);
+}
+#letter-wrap.show .letter-line {
+  animation: lineFade .9s ease forwards;
+}
+@keyframes lineFade {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.letter-sep {
+  text-align: center;
+  color: var(--rose-deep);
+  letter-spacing: 10px;
+  font-size: .8rem;
+  margin: 22px 0 18px;
+  opacity: .7;
+}
+
+.letter-sign {
+  font-family: 'Amiri', serif;
+  font-size: clamp(1.15rem, 4.4vw, 1.35rem);
+  font-weight: 700;
+  color: var(--rose-deep);
+  text-align: left;
+  margin-top: 24px;
+  line-height: 2;
+}
+
+/* Counter */
+.counter-box {
+  margin-top: 30px;
+  padding: 20px 18px 18px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #ffe4ec, #fff1f5);
+  border: 1px solid rgba(231,84,128,.18);
+  text-align: center;
+}
+.counter-label {
+  font-family: 'Amiri', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--rose-deep);
+  margin-bottom: 12px;
+}
+.counter-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-top: 6px;
+}
+.counter-cell {
+  background: rgba(255,255,255,.7);
+  border-radius: 12px;
+  padding: 10px 4px 8px;
+  border: 1px solid rgba(231,84,128,.14);
+}
+.counter-num {
+  font-family: 'Cairo', sans-serif;
+  font-weight: 900;
+  font-size: clamp(1.1rem, 4vw, 1.4rem);
+  color: var(--rose-deep);
+  line-height: 1;
+  display: block;
+  font-variant-numeric: tabular-nums;
+}
+.counter-unit {
+  font-size: .68rem;
+  color: #8d5a6b;
+  margin-top: 4px;
+  display: block;
+  font-weight: 600;
+  letter-spacing: .5px;
+}
+.counter-ms {
+  margin-top: 12px;
+  font-family: 'Cairo', sans-serif;
+  font-weight: 700;
+  font-size: .85rem;
+  color: var(--rose-deep);
+  letter-spacing: 1.5px;
+  font-variant-numeric: tabular-nums;
+  opacity: .85;
+}
+.counter-ms b {
+  font-size: 1.05rem;
+  color: #b3305a;
+}
+
+/* Final button */
+.final-btn {
+  display: block;
+  margin: 26px auto 4px;
+  padding: 15px 40px;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ff8fb5, var(--rose-deep));
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 12px 30px rgba(255,107,157,.45);
+  transition: transform .22s ease, box-shadow .22s ease;
+}
+.final-btn:hover  { transform: translateY(-3px); box-shadow: 0 18px 40px rgba(255,107,157,.55); }
+.final-btn:active { transform: scale(.96); }
+
+/* ============ Hearts explosion ============ */
+.explosion-heart {
+  position: fixed;
+  z-index: 300;
+  pointer-events: none;
+  will-change: transform, opacity;
+  animation: heartFly 3s cubic-bezier(.15,.9,.4,1) forwards;
+}
+@keyframes heartFly {
+  0%   { transform: translate(-50%,-50%) scale(0) rotate(0deg); opacity: 0; }
+  15%  { opacity: 1; transform: translate(-50%,-50%) scale(1) rotate(0deg); }
+  100% { transform: translate(var(--ex), var(--ey)) scale(1.4) rotate(var(--erot)); opacity: 0; }
+}
+
+/* ============ Hint ============ */
+#hint {
+  position: fixed;
+  bottom: 8vh;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 8;
+  font-size: clamp(.85rem, 3.5vw, .98rem);
+  color: var(--gold-soft);
+  text-align: center;
+  padding: 10px 22px;
+  border-radius: 999px;
+  background: rgba(30,15,50,.55);
+  border: 1px solid rgba(255,217,107,.28);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  opacity: 0;
+  transition: opacity .8s ease;
+  pointer-events: none;
+  white-space: nowrap;
+  max-width: 90vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#hint.show { opacity: 1; }
+
+/* ============ Responsive ============ */
+@media (max-width: 480px) {
+  .letter { padding: 34px 22px 28px; border-radius: 22px; }
+  .letter::before { inset: 10px; border-radius: 14px; }
+  .counter-grid { grid-template-columns: repeat(2, 1fr); }
+  .counter-ms { font-size: .78rem; }
+  .start-btn { padding: 16px 40px; font-size: 1.02rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- Sky -->
+<div id="sky">
+  <div class="aurora a1"></div>
+  <div class="aurora a2"></div>
+</div>
+
+<!-- Main scene -->
+<div id="scene">
+  <div id="heart-wrap">
+    <svg id="heart-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="heartGrad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%"  stop-color="#ff6b9d"/>
+          <stop offset="50%" stop-color="#ff8fb5"/>
+          <stop offset="100%" stop-color="#ffd96b"/>
+        </linearGradient>
+        <radialGradient id="heartFill" cx="50%" cy="40%" r="70%">
+          <stop offset="0%"  stop-color="#ff9dba" stop-opacity=".95"/>
+          <stop offset="60%" stop-color="#d43a6f" stop-opacity=".85"/>
+          <stop offset="100%" stop-color="#7d1f3d" stop-opacity=".95"/>
+        </radialGradient>
+      </defs>
+      <path id="heart-fill" fill="url(#heartFill)"
+        d="M100,168 C40,124 10,88 10,58 C10,32 30,14 56,14 C74,14 90,24 100,40 C110,24 126,14 144,14 C170,14 190,32 190,58 C190,88 160,124 100,168 Z"/>
+      <path id="heart-path" fill="none" stroke="url(#heartGrad)" stroke-width="3.5"
+        stroke-linecap="round" stroke-linejoin="round"
+        d="M100,168 C40,124 10,88 10,58 C10,32 30,14 56,14 C74,14 90,24 100,40 C110,24 126,14 144,14 C170,14 190,32 190,58 C190,88 160,124 100,168 Z"/>
+    </svg>
+  </div>
+</div>
+
+<!-- Memory bubbles layer -->
+<div id="memories"></div>
+
+<!-- Hint -->
+<div id="hint">اسمعي كويس... كل نبضة بتقول حاجة 🤍</div>
+
+<!-- Intro overlay -->
+<div id="intro">
+  <h1 class="intro-title">في يوم زي النهارده...<br>قلبي لقى بيته 🤍</h1>
+  <p class="intro-sub">حاجه صغيرة معمولة مخصوص ليكي</p>
+  <button class="start-btn" id="startBtn">افتحي قلبي ❤️</button>
+</div>
+
+<!-- Letter overlay -->
+<div id="letter-wrap">
+  <div class="letter">
+    <div class="letter-head">🌹💌🌹</div>
+    <h1 class="letter-title">سنة عدت وحبيتك في كل ثانيه فيها</h1>
+
+    <p class="letter-line">حبيبتي <b>زوزتي</b> ❤️</p>
+
+    <p class="letter-line">
+      النهارده كملنا سنة كاملة... 365 يوم، وكل يوم فيهم كان ليه طعم مختلف
+      لأنه كان معاكي.
+    </p>
+
+    <p class="letter-line">
+      كل نبضة في القلب ده كانت بتقول اسمك، وكل همسة نجوم في السما
+      كانت بتهمس بحبك. من أول يوم دخلتي حياتي وأنا حاسس إن الدنيا بقت أحلى ,تستاهل احاول فيها.
+    </p>
+
+    <p class="letter-line">
+     شكراً على كل ضحكة ضحكتيهالي، وكل مرة سندتيني فيها وكل دعوه دعيتيهالي من قلبك
+       وكل "أنا معاك" قولتيهالي وخلتني أكمل.
+    </p>
+
+    <p class="letter-line">
+      إنتي مش بس حبيبتي... إنتي صاحبتي، وبيتي، وأماني، وأحلى حاجة حصلتلي ف حياتي ي ست البنات.
+    </p>
+
+    <p class="letter-line">
+      سنة عدت، ولسه السنين هتعدي كمان و عايزك معايا طول العمر... و اتأكدي ان كل يوم هختارك انتي ومش عايز غيرك انتي   </p>
+
+    <div class="letter-sep">❦ ❦ ❦</div>
+
+    <p class="letter-sign">
+      كل سنة وإنتي حبيبتي وسندي ي نونو🌹<br>
+      — <b>[كوتك]</b>
+    </p>
+
+    <!-- Live counter -->
+    <div class="counter-box">
+      <div class="counter-label">🤍 إحنا مع بعض من</div>
+      <div class="counter-grid">
+        <div class="counter-cell"><span class="counter-num" id="c-years">0</span><span class="counter-unit">سنة</span></div>
+        <div class="counter-cell"><span class="counter-num" id="c-days">0</span><span class="counter-unit">يوم</span></div>
+        <div class="counter-cell"><span class="counter-num" id="c-hours">0</span><span class="counter-unit">ساعة</span></div>
+        <div class="counter-cell"><span class="counter-num" id="c-mins">0</span><span class="counter-unit">دقيقة</span></div>
+      </div>
+      <div class="counter-ms">و <b id="c-secs">0</b> ثانية و <b id="c-ms">0</b> جزء من الثانية</div>
+    </div>
+
+    <button class="final-btn" id="finalBtn">دوسي هنا لو سمحتي 🥺</button>
+  </div>
+</div>
+
+<script>
+/* =====================================================
+   الإعدادات — عدّل من هنا فقط
+   ===================================================== */
+const CONFIG = {
+  // تاريخ بداية العلاقة (YYYY-MM-DDTHH:MM:SS)
+  since: '2025-10-11T20:00:00',
+
+  // الذكريات اللي هتطلع من القلب
+  memories: [
+    'أول مرة سمعت صوتك 🌹',
+    'لما كنت بتخانق ف كله واجري عليكي انتي😍',
+    'أول مرة قولتيلي بحبك 💕',
+    'لما سندتيني وأنا كنت تعبان 🤝',
+    'سهرنا لآخر الليل نتكلم 🌙',
+    'ضحكتك اللي بتنور يومي ✨',
+    'اول مره قولتيلي تصبح ع خير ي كوتي🌜',
+    'كلامك الحلو و ثقتك فيا 👀',
+    'كل كلامك الحلو اللي عمري ما هنساه 🎶',
+    'حنيتك و غيرتك و خوفك عليا ',
+    'كل مره بتسمعي فيها كلامي ☀️',
+    'وعدنا اننا هنفضل مع بعض وعلشان خاطر بعض💍'
+  ]
+};
+
+/* =====================================================
+   النجوم والخلفية
+   ===================================================== */
+const sky = document.getElementById('sky');
+const stars = [];
+for (let i = 0; i < 140; i++) {
+  const s = document.createElement('div');
+  s.className = 'star';
+  const size = 1 + Math.random() * 2.6;
+  s.style.left = Math.random() * 100 + '%';
+  s.style.top = Math.random() * 100 + '%';
+  s.style.width = size + 'px';
+  s.style.height = size + 'px';
+  s.style.animationDelay = (Math.random() * 4) + 's';
+  s.style.animationDuration = (2 + Math.random() * 3.5) + 's';
+  sky.appendChild(s);
+  stars.push({ el: s, depth: 0.3 + Math.random() * 0.9 });
+}
+
+// Parallax
+let mouseX = 0, mouseY = 0, targetX = 0, targetY = 0;
+document.addEventListener('mousemove', (e) => {
+  mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+  mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+});
+document.addEventListener('touchmove', (e) => {
+  if (e.touches[0]) {
+    mouseX = (e.touches[0].clientX / window.innerWidth - 0.5) * 2;
+    mouseY = (e.touches[0].clientY / window.innerHeight - 0.5) * 2;
+  }
+}, { passive: true });
+
+function parallaxLoop() {
+  targetX += (mouseX - targetX) * 0.06;
+  targetY += (mouseY - targetY) * 0.06;
+  stars.forEach(({ el, depth }) => {
+    el.style.transform = `translate(${targetX * depth * 18}px, ${targetY * depth * 18}px)`;
+  });
+  requestAnimationFrame(parallaxLoop);
+}
+parallaxLoop();
+
+/* =====================================================
+   Web Audio — نبضة قلب حقيقية "لب-دب"
+   ===================================================== */
+let audioCtx = null;
+let heartTimer = null;
+
+function initAudio() {
+  if (!audioCtx) {
+    try {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    } catch (e) { audioCtx = null; }
+  }
+  if (audioCtx && audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+}
+
+function thump(when, freq, vol) {
+  if (!audioCtx) return;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  const filter = audioCtx.createBiquadFilter();
+
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(freq, when);
+  osc.frequency.exponentialRampToValueAtTime(freq * 0.5, when + 0.25);
+
+  filter.type = 'lowpass';
+  filter.frequency.value = 220;
+
+  gain.gain.setValueAtTime(0.0001, when);
+  gain.gain.exponentialRampToValueAtTime(vol, when + 0.02);
+  gain.gain.exponentialRampToValueAtTime(0.0001, when + 0.32);
+
+  osc.connect(filter);
+  filter.connect(gain);
+  gain.connect(audioCtx.destination);
+  osc.start(when);
+  osc.stop(when + 0.35);
+}
+
+function playBeat() {
+  if (!audioCtx) return;
+  const t = audioCtx.currentTime;
+  thump(t, 90, 0.55);        // لب
+  thump(t + 0.16, 65, 0.35); // دب
+}
+
+function startHeartbeat() {
+  if (!audioCtx || heartTimer) return;
+  playBeat();
+  createRipple();
+  heartWrap.classList.add('beating');
+  heartTimer = setInterval(() => {
+    playBeat();
+    createRipple();
+  }, 950);
+}
+
+/* =====================================================
+   موجة دقة القلب
+   ===================================================== */
+const heartWrap = document.getElementById('heart-wrap');
+function createRipple() {
+  const r = document.createElement('div');
+  r.className = 'ripple';
+  heartWrap.appendChild(r);
+  setTimeout(() => r.remove(), 1700);
+}
+
+/* =====================================================
+   الستوري — تشغيل المشهد
+   ===================================================== */
+const intro = document.getElementById('intro');
+const startBtn = document.getElementById('startBtn');
+const hint = document.getElementById('hint');
+const memoriesLayer = document.getElementById('memories');
+const letterWrap = document.getElementById('letter-wrap');
+
+let started = false;
+
+startBtn.addEventListener('click', () => {
+  if (started) return;
+  started = true;
+
+  initAudio();
+  startHeartbeat();
+
+  intro.classList.add('gone');
+  setTimeout(() => intro.remove(), 1300);
+
+  setTimeout(() => hint.classList.add('show'), 1200);
+  setTimeout(() => hint.textContent = 'كل نبضة بتطلّع ذكرى... بصي حواليك 🤍', 4000);
+
+  // ابدأ اطلاع الذكريات
+  setTimeout(() => revealMemories(), 3100);
+});
+
+/* =====================================================
+   الذكريات — بتطلع من القلب مع كل نبضة
+   ===================================================== */
+function revealMemories() {
+  const mems = CONFIG.memories;
+  let i = 0;
+
+  const interval = setInterval(() => {
+    if (i >= mems.length) {
+      clearInterval(interval);
+      setTimeout(() => {
+        hint.textContent = 'دوسي على القلب دلوقتي ❤️';
+        heartWrap.style.cursor = 'pointer';
+        heartWrap.addEventListener('click', onHeartClick, { once: true });
+      }, 1600);
+      return;
+    }
+    spawnMemory(mems[i]);
+    i++;
+  }, 1200);
+}
+
+function spawnMemory(text) {
+  const m = document.createElement('div');
+  m.className = 'memory';
+  m.textContent = text;
+
+  // مكان عشوائي أفقي
+  const offsetX = (Math.random() - 0.5) * 60; // vw
+  m.style.marginLeft = offsetX + 'vw';
+
+  memoriesLayer.appendChild(m);
+  setTimeout(() => m.remove(), 5200);
+}
+
+/* =====================================================
+   عند الضغط على القلب
+   ===================================================== */
+function onHeartClick() {
+  // وقف النبض
+  if (heartTimer) clearInterval(heartTimer);
+  heartTimer = null;
+
+  // انفجار ضوء
+  burstLight();
+
+  // قلل القلب ثم افتح الرسالة
+  heartWrap.style.transform = 'scale(0)';
+  heartWrap.style.opacity = '0';
+
+  hint.classList.remove('show');
+
+  setTimeout(() => {
+    letterWrap.classList.add('show');
+    startCounter();
+    animateLetterLines();
+  }, 700);
+}
+
+function burstLight() {
+  for (let i = 0; i < 40; i++) {
+    const p = document.createElement('div');
+    p.className = 'explosion-heart';
+    p.textContent = ['✨','💫','⭐','🌟'][Math.floor(Math.random()*4)];
+    p.style.left = '50%';
+    p.style.top = '50%';
+    p.style.fontSize = (8 + Math.random() * 16) + 'px';
+    const angle = Math.random() * Math.PI * 2;
+    const dist = 30 + Math.random() * 40;
+    p.style.setProperty('--ex', (Math.cos(angle) * dist) + 'vw');
+    p.style.setProperty('--ey', (Math.sin(angle) * dist) + 'vh');
+    p.style.setProperty('--erot', (Math.random() * 720 - 360) + 'deg');
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 3100);
+  }
+}
+
+function animateLetterLines() {
+  const lines = document.querySelectorAll('.letter-line');
+  lines.forEach((l, i) => {
+    l.style.animationDelay = (0.5 + i * 0.45) + 's';
+  });
+}
+
+/* =====================================================
+   العدّاد الحي
+   ===================================================== */
+let counterTimer = null;
+function startCounter() {
+  const start = new Date(CONFIG.since).getTime();
+  if (isNaN(start)) return;
+
+  const elY = document.getElementById('c-years');
+  const elD = document.getElementById('c-days');
+  const elH = document.getElementById('c-hours');
+  const elM = document.getElementById('c-mins');
+  const elS = document.getElementById('c-secs');
+  const elMs = document.getElementById('c-ms');
+
+  function tick() {
+    const now = Date.now();
+    let diff = Math.max(0, now - start);
+
+    const MS_PER_SEC = 1000;
+    const MS_PER_MIN = 60 * MS_PER_SEC;
+    const MS_PER_HR  = 60 * MS_PER_MIN;
+    const MS_PER_DAY = 24 * MS_PER_HR;
+    const MS_PER_YR  = 365.25 * MS_PER_DAY;
+
+    const years = Math.floor(diff / MS_PER_YR);
+    diff -= years * MS_PER_YR;
+
+    const days = Math.floor(diff / MS_PER_DAY);
+    diff -= days * MS_PER_DAY;
+
+    const hours = Math.floor(diff / MS_PER_HR);
+    diff -= hours * MS_PER_HR;
+
+    const mins = Math.floor(diff / MS_PER_MIN);
+    diff -= mins * MS_PER_MIN;
+
+    const secs = Math.floor(diff / MS_PER_SEC);
+    const ms = Math.floor(diff % MS_PER_SEC);
+
+    elY.textContent = years;
+    elD.textContent = days;
+    elH.textContent = hours;
+    elM.textContent = mins;
+    elS.textContent = secs;
+    elMs.textContent = String(ms).padStart(3, '0');
+  }
+
+  tick();
+  counterTimer = setInterval(tick, 47); // ~20fps for ms
+}
+
+/* =====================================================
+   الاحتفال النهائي
+   ===================================================== */
+document.getElementById('finalBtn').addEventListener('click', (e) => {
+  e.stopPropagation();
+
+  // موسيقى احتفال
+  playFinaleChime();
+
+  // انفجار قلوب من كل حتة
+  for (let i = 0; i < 70; i++) {
+    setTimeout(() => spawnFlyingHeart(), i * 40);
+  }
+
+  // رسالة أخيرة
+  setTimeout(() => {
+    const finalMsg = document.createElement('div');
+    finalMsg.textContent = 'سنة... عدت وانا معايا احلي واحده ف الدنيا🌹';
+    finalMsg.style.cssText = `
+      position: fixed; inset: 0; z-index: 999;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Amiri', serif;
+      font-size: clamp(1.6rem, 7vw, 3rem);
+      font-weight: 700; color: #fff;
+      text-shadow: 0 0 40px rgba(255,107,157,.9), 0 0 80px rgba(255,217,107,.6);
+      background: radial-gradient(circle at center, rgba(255,107,157,.35), rgba(5,3,15,.95));
+      text-align: center; padding: 30px;
+      opacity: 0; transition: opacity 1.5s ease;
+      pointer-events: none;
+    `;
+    document.body.appendChild(finalMsg);
+    requestAnimationFrame(() => finalMsg.style.opacity = '1');
+  }, 1800);
+});
+
+function spawnFlyingHeart() {
+  const h = document.createElement('div');
+  h.className = 'explosion-heart';
+  h.textContent = ['❤️','💕','🌹','💖','💗','✨','💫'][Math.floor(Math.random()*7)];
+  h.style.left = (10 + Math.random() * 80) + 'vw';
+  h.style.top = (10 + Math.random() * 80) + 'vh';
+  h.style.fontSize = (16 + Math.random() * 26) + 'px';
+  h.style.animationDuration = (2.4 + Math.random() * 1.8) + 's';
+  const angle = Math.random() * Math.PI * 2;
+  const dist = 20 + Math.random() * 40;
+  h.style.setProperty('--ex', (Math.cos(angle) * dist) + 'vw');
+  h.style.setProperty('--ey', (Math.sin(angle) * dist) + 'vh');
+  h.style.setProperty('--erot', (Math.random() * 720 - 360) + 'deg');
+  document.body.appendChild(h);
+  setTimeout(() => h.remove(), 4500);
+}
+
+function playFinaleChime() {
+  if (!audioCtx) return;
+  const melody = [523.25, 587.33, 659.25, 783.99, 880, 1046.5, 1318.5];
+  melody.forEach((freq, i) => {
+    setTimeout(() => {
+      const osc = audioCtx.createOscillator();
+      const g = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      g.gain.setValueAtTime(0.0001, audioCtx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.14, audioCtx.currentTime + 0.04);
+      g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 1.1);
+      osc.connect(g);
+      g.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 1.15);
+    }, i * 130);
+  });
+}
+
+/* =====================================================
+   احتياطي: لو المستخدم دوس على القلب قبل المعاد
+   ===================================================== */
+// لو حصل إن الشاشة كبرت، خلي القلب يظهر فورًا لو الانترو اتقفل
+window.addEventListener('load', () => {
+  // اختياري
+});
+</script>
+
+</body>
+</html>
